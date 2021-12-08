@@ -28,6 +28,25 @@ class RolesCreateTest extends TestCase
         $this->assertEquals($response->getData()->data->name, Str::slug($name));
     }
 
+    public function testTutorCantCreateRole()
+    {
+        $user = config('auth.providers.users.model')::factory()->create();
+        $user->guard_name = 'api';
+        $user->assignRole('tutor');
+
+        $name = "lkdfsj lfds lkjfsd lkjsl87923 dfs";
+        $response = $this->actingAs($user, 'api')->postJson(
+            '/api/admin/roles',
+            [
+                'name' => $name
+            ]
+        );
+
+
+
+        $response->assertStatus(403);
+    }
+
 
     public function testAdminCannotCreateRoleWithoutName()
     {
