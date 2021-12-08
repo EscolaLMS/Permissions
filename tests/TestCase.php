@@ -2,17 +2,13 @@
 
 namespace EscolaLms\Permissions\Tests;
 
-use EscolaLms\Core\Models\User;
 use EscolaLms\Permissions\AuthServiceProvider;
 use EscolaLms\Permissions\Database\Seeders\PermissionTableSeeder;
 use EscolaLms\Permissions\EscolaLmsPermissionsServiceProvider;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Laravel\Passport\PassportServiceProvider;
 use Spatie\Permission\PermissionServiceProvider;
-use EscolaLms\Templates\Services\Contracts\VariablesServiceContract;
-use EscolaLms\Templates\Services\VariablesService;
-use EscolaLms\Templates\Tests\Enum\Email\CertificateVar as EmailCertificateVar;
-use EscolaLms\Templates\Tests\Enum\Pdf\CertificateVar as PdfCertificateVar;
+
 
 
 class TestCase extends \EscolaLms\Core\Tests\TestCase
