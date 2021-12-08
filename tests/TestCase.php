@@ -1,11 +1,11 @@
 <?php
 
-namespace EscolaLms\Templates\Tests;
+namespace EscolaLms\Permissions\Tests;
 
 use EscolaLms\Core\Models\User;
-use EscolaLms\Templates\AuthServiceProvider;
-use EscolaLms\Templates\Database\Seeders\PermissionTableSeeder;
-use EscolaLms\Templates\EscolaLmsTemplatesServiceProvider;
+use EscolaLms\Permissions\AuthServiceProvider;
+use EscolaLms\Permissions\Database\Seeders\PermissionTableSeeder;
+use EscolaLms\Permissions\EscolaLmsPermissionsServiceProvider;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Laravel\Passport\PassportServiceProvider;
 use Spatie\Permission\PermissionServiceProvider;
@@ -25,35 +25,34 @@ class TestCase extends \EscolaLms\Core\Tests\TestCase
     {
         parent::setUp();
         $this->seed(PermissionTableSeeder::class);
-        $variablesService = resolve(VariablesServiceContract::class);
-        $variablesService::addToken(EmailCertificateVar::class, 'email', 'certificates');
-        $variablesService::addToken(PdfCertificateVar::class, 'pdf', 'certificates');
-
     }
 
     protected function getPackageProviders($app): array
     {
         return [
             ...parent::getPackageProviders($app),
-            EscolaLmsTemplatesServiceProvider::class,
+            EscolaLmsPermissionsServiceProvider::class,
             PassportServiceProvider::class,
             PermissionServiceProvider::class,
             AuthServiceProvider::class
         ];
     }
 
-    protected function getEnvironmentSetUp($app)
-    {
-        parent::getEnvironmentSetUp($app);
-        $app['config']->set('mail.driver', 'log');
-    }
+
 
     protected function authenticateAsAdmin()
     {
-        $this->user = config('auth.providers.users.model')::factory()->create();        
+        $this->user = config('auth.providers.users.model')::factory()->create();
         $this->user->guard_name = 'api';
-        $this->user->givePermissionTo('create templates');
-        $this->user->givePermissionTo('update templates');
-        $this->user->givePermissionTo('delete templates');
+        $this->user->assignRole('admin');
+    }
+
+    protected function findPermissionByName($responseData, $name)
+    {
+        $needle = array_filter($responseData->data, fn ($role) => $role->name === $name);
+        if (count($needle) >= 1) {
+            return array_pop($needle);
+        }
+        return false;
     }
 }

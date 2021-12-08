@@ -3,6 +3,7 @@
 namespace EscolaLms\Permissions\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 
 class RoleDeleteRequest extends FormRequest
 {
@@ -13,9 +14,7 @@ class RoleDeleteRequest extends FormRequest
      */
     public function authorize()
     {
-        /** @var User $user */
-        $user = $this->user();
-        return $user->can('administrate roles', 'api');
+        return Gate::check('administrate roles');
     }
 
     /**

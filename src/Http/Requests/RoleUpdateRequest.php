@@ -3,6 +3,7 @@
 namespace EscolaLms\Permissions\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 
 class RoleUpdateRequest extends FormRequest
 {
@@ -13,9 +14,7 @@ class RoleUpdateRequest extends FormRequest
      */
     public function authorize()
     {
-        /** @var User $user */
-        $user = $this->user();
-        return $user->can('administrate roles', 'api');
+        return Gate::check('administrate roles');
     }
 
 
@@ -26,6 +25,9 @@ class RoleUpdateRequest extends FormRequest
      */
     public function rules()
     {
-        return [];
+        return [
+            'permissions' => ['present', 'array'],
+            'permissions.*' => ['string']
+        ];
     }
 }

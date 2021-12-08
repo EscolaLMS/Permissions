@@ -46,4 +46,11 @@ class PermissionsService implements PermissionsServiceContract
         $role = Role::where('name', $name)->firstOrFail();
         return $role->delete();
     }
+
+    public function updateRolePermissions(string $name, array $permissions): Collection
+    {
+        $role = $this->createRole($name);
+        $role->syncPermissions($permissions);
+        return $this->rolePermissions($name);
+    }
 }

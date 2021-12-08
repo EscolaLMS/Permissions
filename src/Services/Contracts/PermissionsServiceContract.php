@@ -18,4 +18,6 @@ interface PermissionsServiceContract
     public function deleteRole(string $name): bool;
 
     public function rolePermissions(string $name): Collection;
+
+    public function updateRolePermissions(string $name, array $permissions): Collection;
 }

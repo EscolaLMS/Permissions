@@ -67,20 +67,14 @@ class PermissionsAdminApiController extends EscolaLmsBaseController implements P
         }
     }
 
-    /*
-    public function update(TemplateUpdateRequest $request, int $id): JsonResponse
+
+    public function update(RoleUpdateRequest $request, string $name): JsonResponse
     {
         try {
-            $input = $request->all();
-
-            $updated = $this->templateService->update($id, $input);
-            if (!$updated) {
-                return $this->sendError(sprintf("template id '%s' doesn't exists", $id), 404);
-            }
-            return $this->sendResponseForResource(TemplateResource::make($updated), "template updated successfully");
+            $permissions = $this->service->updateRolePermissions($name, $request->input('permissions'));
+            return $this->sendResponseForResource(PermissionResource::collection($permissions), "role permissions list updated successfully");
         } catch (Exception $e) {
             return $this->sendError($e->getMessage());
         }
     }
-    */
 }

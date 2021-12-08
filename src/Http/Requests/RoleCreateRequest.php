@@ -2,8 +2,8 @@
 
 namespace EscolaLms\Permissions\Http\Requests;
 
-use EscolaLms\Core\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 
 class RoleCreateRequest extends FormRequest
 {
@@ -14,9 +14,7 @@ class RoleCreateRequest extends FormRequest
      */
     public function authorize()
     {
-        /** @var User $user */
-        $user = $this->user();
-        return $user->can('administrate roles', 'api');
+        return Gate::check('administrate roles');
     }
 
     /**
@@ -27,7 +25,7 @@ class RoleCreateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'unique:roles,name'
+            'name' => ['required', 'string']
         ];
     }
 }
