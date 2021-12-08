@@ -16,6 +16,7 @@ use EscolaLms\Permissions\Services\Contracts\PermissionsServiceContract;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Exception;
+use EscolaLms\Permissions\Exceptions\AdminRoleException;
 
 class PermissionsAdminApiController extends EscolaLmsBaseController implements PermissionsAdminApiContract
 {
@@ -28,12 +29,8 @@ class PermissionsAdminApiController extends EscolaLmsBaseController implements P
 
     public function index(RoleListingRequest $request): JsonResponse
     {
-        try {
-            $roles = $this->service->listRoles();
-            return $this->sendResponseForResource(RoleResource::collection($roles), "roles list retrieved successfully");
-        } catch (Exception $e) {
-            return $this->sendError($e->getMessage());
-        }
+        $roles = $this->service->listRoles();
+        return $this->sendResponseForResource(RoleResource::collection($roles), "roles list retrieved successfully");
     }
 
     public function show(RoleListingRequest $request, string $name): JsonResponse
@@ -49,12 +46,8 @@ class PermissionsAdminApiController extends EscolaLmsBaseController implements P
 
     public function create(RoleCreateRequest $request): JsonResponse
     {
-        try {
-            $role = $this->service->createRole($request->input('name'));
-            return $this->sendResponseForResource(RoleResource::make($role), "role created successfully");
-        } catch (Exception $e) {
-            return $this->sendError($e->getMessage());
-        }
+        $role = $this->service->createRole($request->input('name'));
+        return $this->sendResponseForResource(RoleResource::make($role), "role created successfully");
     }
 
     public function delete(RoleDeleteRequest $request, string $name): JsonResponse
@@ -62,6 +55,8 @@ class PermissionsAdminApiController extends EscolaLmsBaseController implements P
         try {
             $deleted = $this->service->deleteRole($name);
             return $this->sendResponse($deleted, "role deleted successfully");
+        } catch (AdminRoleException $e) {
+            return $this->sendError($e->getMessage(), 403);
         } catch (Exception $e) {
             return $this->sendError($e->getMessage());
         }

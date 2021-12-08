@@ -42,6 +42,17 @@ class RolesDeleteTest extends TestCase
         $response->assertStatus(404);
     }
 
+    public function testAdminCannotDeleteAdminRole()
+    {
+        $this->authenticateAsAdmin();
+
+        $name = 'admin';
+
+        $response = $this->actingAs($this->user, 'api')->delete('/api/admin/roles/' . $name);
+
+        $response->assertStatus(403);
+    }
+
     public function testGuestCannotDeleteExistingRole()
     {
         $name = 'lorem-ipsum-test';
