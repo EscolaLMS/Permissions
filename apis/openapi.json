@@ -113,7 +113,7 @@
                         "description": "user doesn't have required access rights"
                     },
                     "400": {
-                        "description": "cannot find a template with provided slug identifier"
+                        "description": "cannot find a role with provided slug identifier"
                     },
                     "500": {
                         "description": "server-side error"
@@ -135,7 +135,7 @@
                     {
                         "name": "name",
                         "in": "path",
-                        "description": "Unique human-readable template identifier",
+                        "description": "Unique human-readable role identifier",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -164,7 +164,7 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "template updated successfully"
+                        "description": "role updated successfully"
                     },
                     "401": {
                         "description": "endpoint requires authentication"
@@ -173,7 +173,7 @@
                         "description": "user doesn't have required access rights"
                     },
                     "400": {
-                        "description": "cannot find a template with provided slug identifier"
+                        "description": "cannot find a role with provided slug identifier"
                     },
                     "422": {
                         "description": "one of the parameters has invalid format"
@@ -189,13 +189,13 @@
                 ]
             }
         },
-        "/api/admin/templates/{name}": {
+        "/api/admin/roles/{name}": {
             "get": {
                 "tags": [
                     "Admin Permissions"
                 ],
                 "summary": "Read a role and returns list of all permissions ",
-                "operationId": "7b8a80a0ef5bb2f6b8729e58cc6cc8a5",
+                "operationId": "45d7c2575deef68348ecb1ffaed5ca94",
                 "parameters": [
                     {
                         "name": "name",
