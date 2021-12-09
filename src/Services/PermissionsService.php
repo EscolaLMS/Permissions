@@ -24,7 +24,7 @@ class PermissionsService implements PermissionsServiceContract
     {
         $role = Role::where(['name' => $name, 'guard_name' => 'api'])->firstOrFail();
         $rolePermissions = $role->permissions->pluck('name');
-        $permission = Permission::all();
+        $permission = Permission::where('guard_name', 'api')->get();
         return $permission->map(function ($item) use ($rolePermissions) {
             $item->assigned = $rolePermissions->contains($item->name);
             return $item;
