@@ -49,6 +49,9 @@ class PermissionsService implements PermissionsServiceContract
 
     public function updateRolePermissions(string $name, array $permissions): Collection
     {
+        if ($name === 'admin') {
+            throw new AdminRoleException("Admin role cannot be updated");
+        }
         $role = $this->createRole($name);
         $role->syncPermissions($permissions);
         return $this->rolePermissions($name);
