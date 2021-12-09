@@ -158,7 +158,7 @@ interface PermissionsAdminApiContract
      *         {"passport": {}},
      *     },
      *     @OA\Parameter(
-     *         description="Unique human-readable template identifier",
+     *         description="Unique human-readable role identifier",
      *         in="path",
      *         name="name",
      *         required=true,
@@ -187,7 +187,7 @@ interface PermissionsAdminApiContract
      *     ),
      *     @OA\Response(
      *          response=200,
-     *          description="template updated successfully",
+     *          description="role updated successfully",
      *      ),
      *     @OA\Response(
      *          response=401,
@@ -199,7 +199,7 @@ interface PermissionsAdminApiContract
      *      ),
      *     @OA\Response(
      *          response=400,
-     *          description="cannot find a template with provided slug identifier",
+     *          description="cannot find a role with provided slug identifier",
      *      ),
      *     @OA\Response(
      *          response=422,
@@ -247,7 +247,7 @@ interface PermissionsAdminApiContract
      *      ),
      *     @OA\Response(
      *          response=400,
-     *          description="cannot find a template with provided slug identifier",
+     *          description="cannot find a role with provided slug identifier",
      *      ),
      *     @OA\Response(
      *          response=500,
@@ -262,7 +262,7 @@ interface PermissionsAdminApiContract
 
     /**
      * @OA\Get(
-     *     path="/api/admin/templates/{name}",
+     *     path="/api/admin/roles/{name}",
      *     summary="Read a role and returns list of all permissions ",
      *     tags={"Admin Permissions"},
      *     security={
