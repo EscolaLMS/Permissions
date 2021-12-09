@@ -24,7 +24,7 @@ class PermissionsService implements PermissionsServiceContract
     {
         $role = Role::where(['name' => $name, 'guard_name' => 'api'])->firstOrFail();
         $rolePermissions = $role->permissions->pluck('name');
-        $permission = Permission::all();
+        $permission = Permission::where('guard_name', 'api')->get();
         return $permission->map(function ($item) use ($rolePermissions) {
             $item->assigned = $rolePermissions->contains($item->name);
             return $item;
@@ -49,6 +49,9 @@ class PermissionsService implements PermissionsServiceContract
 
     public function updateRolePermissions(string $name, array $permissions): Collection
     {
+        if ($name === 'admin') {
+            throw new AdminRoleException("Admin role cannot be updated");
+        }
         $role = $this->createRole($name);
         $role->syncPermissions($permissions);
         return $this->rolePermissions($name);
