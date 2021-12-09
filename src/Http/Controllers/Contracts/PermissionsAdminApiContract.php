@@ -151,7 +151,7 @@ interface PermissionsAdminApiContract
 
     /**
      * @OA\Patch(
-     *     path="/api/admin/roles/{id}",
+     *     path="/api/admin/roles/{name}",
      *     summary="Update an existing Role identified by name by list or new permissions",
      *     tags={"Admin Permissions"},
      *     security={
@@ -218,7 +218,7 @@ interface PermissionsAdminApiContract
 
     /**
      * @OA\Delete(
-     *     path="/api/admin/roles/{id}",
+     *     path="/api/admin/roles/{name}",
      *     summary="Delete a Role identified by a name",
      *     tags={"Admin Permissions"},
      *     security={
