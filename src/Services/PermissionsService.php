@@ -22,7 +22,7 @@ class PermissionsService implements PermissionsServiceContract
 
     public function rolePermissions(string $name): Collection
     {
-        $role = Role::where('name', $name)->firstOrFail();
+        $role = Role::where(['name' => $name, 'guard_name' => 'api'])->firstOrFail();
         $rolePermissions = $role->permissions->pluck('name');
         $permission = Permission::all();
         return $permission->map(function ($item) use ($rolePermissions) {
@@ -43,7 +43,7 @@ class PermissionsService implements PermissionsServiceContract
         if ($name === 'admin') {
             throw new AdminRoleException("Admin role cannot be deleted");
         }
-        $role = Role::where('name', $name)->firstOrFail();
+        $role = Role::where(['name' => $name, 'guard_name' => 'api'])->firstOrFail();
         return $role->delete();
     }
 
