@@ -2,9 +2,8 @@
 
 namespace EscolaLms\Permissions\Services\Contracts;
 
-
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use Spatie\Permission\Contracts\Role;
 
 /**
  * @package EscolaLms\Permissions\Http\Services\Contracts
@@ -13,7 +12,7 @@ interface PermissionsServiceContract
 {
     public function listRoles(): Collection;
 
-    public function createRole(string $name): Model;
+    public function createRole(string $name): Role;
 
     public function deleteRole(string $name): bool;
 

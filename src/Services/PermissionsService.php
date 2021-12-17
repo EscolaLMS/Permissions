@@ -2,10 +2,9 @@
 
 namespace EscolaLms\Permissions\Services;
 
+use EscolaLms\Permissions\Events\EscolaLmsPermissionRoleChangedTemplateEvent;
+use EscolaLms\Permissions\Events\EscolaLmsPermissionRoleRemovedTemplateEvent;
 use EscolaLms\Permissions\Services\Contracts\PermissionsServiceContract;
-use Exception;
-use Illuminate\Database\Eloquent\Model;
-
 use Illuminate\Support\Collection;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
@@ -32,10 +31,9 @@ class PermissionsService implements PermissionsServiceContract
         return $permission;
     }
 
-    public function createRole(string $name): Model
+    public function createRole(string $name): \Spatie\Permission\Contracts\Role
     {
-        $role = Role::findOrCreate(Str::slug($name), 'api');
-        return $role;
+        return Role::findOrCreate(Str::slug($name), 'api');
     }
 
     public function deleteRole(string $name): bool
@@ -44,7 +42,12 @@ class PermissionsService implements PermissionsServiceContract
             throw new AdminRoleException("Admin role cannot be deleted");
         }
         $role = Role::where(['name' => $name, 'guard_name' => 'api'])->firstOrFail();
-        return $role->delete();
+        $roleEvent = clone $role;
+        if ($role->delete()) {
+            event(new EscolaLmsPermissionRoleRemovedTemplateEvent(auth()->user(), $roleEvent));
+            return true;
+        }
+        return false;
     }
 
     public function updateRolePermissions(string $name, array $permissions): Collection
@@ -54,6 +57,7 @@ class PermissionsService implements PermissionsServiceContract
         }
         $role = $this->createRole($name);
         $role->syncPermissions($permissions);
+        event(new EscolaLmsPermissionRoleChangedTemplateEvent(auth()->user(), $role));
         return $this->rolePermissions($name);
     }
 }
