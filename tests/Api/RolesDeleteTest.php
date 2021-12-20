@@ -2,10 +2,12 @@
 
 namespace EscolaLms\Permissions\Tests\Api;
 
+use EscolaLms\Permissions\Events\EscolaLmsPermissionRoleRemovedTemplateEvent;
 use EscolaLms\Templates\Models\Template;
 use EscolaLms\Templates\Repository\TemplateRepository;
 use EscolaLms\Permissions\Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Event;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
@@ -17,6 +19,7 @@ class RolesDeleteTest extends TestCase
 
     public function testAdminCanDeleteExistingRole()
     {
+        Event::fake();
         $this->authenticateAsAdmin();
         $name = 'lorem-ipsum-test';
 
@@ -29,6 +32,7 @@ class RolesDeleteTest extends TestCase
         $role = Role::where(['name' => $name])->first();
 
         $this->assertNull($role);
+        Event::assertDispatched(EscolaLmsPermissionRoleRemovedTemplateEvent::class);
     }
 
     public function testAdminCannotDeleteMissingRole()

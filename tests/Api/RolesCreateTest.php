@@ -2,8 +2,10 @@
 
 namespace EscolaLms\Permissions\Tests\Api;
 
+use EscolaLms\Permissions\Events\EscolaLmsPermissionRoleChangedTemplateEvent;
 use EscolaLms\Permissions\Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Str;
 
 class RolesCreateTest extends TestCase
@@ -14,6 +16,7 @@ class RolesCreateTest extends TestCase
 
     public function testAdminCanCreateRole()
     {
+        Event::fake();
         $this->authenticateAsAdmin();
         $name = "lkdfsj lfds lkjfsd lkjsl87923 dfs";
         $response = $this->actingAs($this->user, 'api')->postJson(
@@ -26,6 +29,7 @@ class RolesCreateTest extends TestCase
         $response->assertStatus(200);
 
         $this->assertEquals($response->getData()->data->name, Str::slug($name));
+        Event::assertDispatched(EscolaLmsPermissionRoleChangedTemplateEvent::class);
     }
 
     public function testTutorCantCreateRole()
@@ -41,8 +45,6 @@ class RolesCreateTest extends TestCase
                 'name' => $name
             ]
         );
-
-
 
         $response->assertStatus(403);
     }
@@ -67,6 +69,7 @@ class RolesCreateTest extends TestCase
                 'name' => 'name'
             ]
         );
+        dd($response);
         $response->assertUnauthorized();
     }
 }

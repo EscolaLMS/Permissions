@@ -57,6 +57,7 @@ class PermissionsService implements PermissionsServiceContract
         }
         $role = $this->createRole($name);
         $role->syncPermissions($permissions);
+
         event(new EscolaLmsPermissionRoleChangedTemplateEvent(auth()->user(), $role));
         return $this->rolePermissions($name);
     }

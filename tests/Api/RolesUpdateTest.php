@@ -2,8 +2,10 @@
 
 namespace EscolaLms\Permissions\Tests\Api;
 
+use EscolaLms\Permissions\Events\EscolaLmsPermissionRoleChangedTemplateEvent;
 use EscolaLms\Permissions\Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Event;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
@@ -34,17 +36,18 @@ class RolesUpdateTest extends TestCase
         $this->assertTrue($per1->assigned === false);
         $this->assertTrue($per2->assigned === false);
 
+        Event::fake();
         $response = $this->actingAs($this->user, 'api')->patchJson('/api/admin/roles/' . $name, [
             'permissions' => [
                 'permission_in', 'permission_out'
             ]
         ]);
-
         $response->assertOk();
 
 
         $this->assertTrue($per1->assigned === false);
         $this->assertTrue($per2->assigned === false);
+        Event::assertDispatched(EscolaLmsPermissionRoleChangedTemplateEvent::class);
     }
 
     public function testAdminCannotUpdateMissingRole()

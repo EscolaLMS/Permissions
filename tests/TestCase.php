@@ -5,6 +5,7 @@ namespace EscolaLms\Permissions\Tests;
 use EscolaLms\Permissions\AuthServiceProvider;
 use EscolaLms\Permissions\Database\Seeders\PermissionTableSeeder;
 use EscolaLms\Permissions\EscolaLmsPermissionsServiceProvider;
+use Illuminate\Foundation\Bootstrap\LoadEnvironmentVariables;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Laravel\Passport\PassportServiceProvider;
 use Spatie\Permission\PermissionServiceProvider;
@@ -50,5 +51,12 @@ class TestCase extends \EscolaLms\Core\Tests\TestCase
             return array_pop($needle);
         }
         return false;
+    }
+
+    protected function getEnvironmentSetUp($app)
+    {
+        $app->useEnvironmentPath(__DIR__ . '/..');
+        $app->bootstrapWith([LoadEnvironmentVariables::class]);
+        parent::getEnvironmentSetUp($app);
     }
 }
