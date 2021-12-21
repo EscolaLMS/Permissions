@@ -3,6 +3,7 @@
 namespace EscolaLms\Permissions\Http\Controllers;
 
 use EscolaLms\Core\Http\Controllers\EscolaLmsBaseController;
+use EscolaLms\Permissions\Events\EscolaLmsPermissionRoleChangedTemplateEvent;
 use EscolaLms\Permissions\Http\Controllers\Contracts\PermissionsAdminApiContract;
 use EscolaLms\Permissions\Http\Requests\RoleCreateRequest;
 use EscolaLms\Permissions\Http\Requests\RoleDeleteRequest;
@@ -14,7 +15,6 @@ use EscolaLms\Permissions\Http\Resources\PermissionResource;
 
 use EscolaLms\Permissions\Services\Contracts\PermissionsServiceContract;
 use Illuminate\Http\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
 use Exception;
 use EscolaLms\Permissions\Exceptions\AdminRoleException;
 
@@ -47,6 +47,7 @@ class PermissionsAdminApiController extends EscolaLmsBaseController implements P
     public function create(RoleCreateRequest $request): JsonResponse
     {
         $role = $this->service->createRole($request->input('name'));
+        event(new EscolaLmsPermissionRoleChangedTemplateEvent(auth()->user(), $role));
         return $this->sendResponseForResource(RoleResource::make($role), "role created successfully");
     }
 
