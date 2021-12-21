@@ -43,11 +43,9 @@ class PermissionsService implements PermissionsServiceContract
         }
         $role = Role::where(['name' => $name, 'guard_name' => 'api'])->firstOrFail();
         $roleEvent = clone $role;
-        if ($role->delete()) {
-            event(new EscolaLmsPermissionRoleRemovedTemplateEvent(auth()->user(), $roleEvent));
-            return true;
-        }
-        return false;
+        $role->delete();
+        event(new EscolaLmsPermissionRoleRemovedTemplateEvent(auth()->user(), $roleEvent));
+        return true;
     }
 
     public function updateRolePermissions(string $name, array $permissions): Collection
