@@ -47,7 +47,9 @@ class RolesUpdateTest extends TestCase
 
         $this->assertTrue($per1->assigned === false);
         $this->assertTrue($per2->assigned === false);
-        Event::assertDispatched(EscolaLmsPermissionRoleChangedTemplateEvent::class);
+        Event::assertDispatched(EscolaLmsPermissionRoleChangedTemplateEvent::class, function ($event) {
+            return $event->getUser() && $event->getRole();
+        });
     }
 
     public function testAdminCannotUpdateMissingRole()
@@ -73,6 +75,23 @@ class RolesUpdateTest extends TestCase
         $response->assertNotFound();
     }
 
+    public function testAdminThrowUpdateRole()
+    {
+        $this->authenticateAsAdmin();
+        $name = 'admin';
+        $permission_in = "permission_in";
+        Role::findOrCreate($name, 'api');
+        Permission::findOrCreate($permission_in, 'api');
+        $response = $this->actingAs($this->user, 'api')->patchJson('/api/admin/roles/' . $name, [
+            'permissions' => [
+                'permission_in'
+            ]
+        ]);
+        $response->assertNotFound();
+        $data = $response->getData();
+        $this->assertObjectHasAttribute( 'message', $data);
+        $this->assertTrue($data->message === __("Admin role cannot be updated"));
+    }
 
 
     public function testGuestCannotUpdateRole()

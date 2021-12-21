@@ -32,7 +32,22 @@ class RolesDeleteTest extends TestCase
         $role = Role::where(['name' => $name])->first();
 
         $this->assertNull($role);
-        Event::assertDispatched(EscolaLmsPermissionRoleRemovedTemplateEvent::class);
+        Event::assertDispatched(EscolaLmsPermissionRoleRemovedTemplateEvent::class, function ($event) {
+            return $event->getUser() && $event->getRole();
+        });
+    }
+
+    public function testAdminCanNotDeleteRole()
+    {
+        Event::fake();
+        $this->authenticateAsAdmin();
+        $name = 'lorem-ipsum-test';
+
+        $response = $this->actingAs($this->user, 'api')->delete('/api/admin/roles/' . $name);
+        $response->assertNotFound();
+        Event::assertNotDispatched(EscolaLmsPermissionRoleRemovedTemplateEvent::class, function ($event) {
+            return $event->getUser() && $event->getRole();
+        });
     }
 
     public function testAdminCannotDeleteMissingRole()
