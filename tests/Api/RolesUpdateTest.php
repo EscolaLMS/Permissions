@@ -48,7 +48,7 @@ class RolesUpdateTest extends TestCase
         $this->assertTrue($per1->assigned === false);
         $this->assertTrue($per2->assigned === false);
         Event::assertDispatched(EscolaLmsPermissionRoleChangedTemplateEvent::class, function ($event) {
-            return $event->getUser() && $event->getRole();
+            return $event->getUser() && $this->user === $event->getUser() && $event->getRole();
         });
     }
 

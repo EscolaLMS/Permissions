@@ -30,7 +30,7 @@ class RolesCreateTest extends TestCase
 
         $this->assertEquals($response->getData()->data->name, Str::slug($name));
         Event::assertDispatched(EscolaLmsPermissionRoleChangedTemplateEvent::class, function ($event) {
-            return $event->getUser() && $event->getRole();
+            return $event->getUser() && $this->user === $event->getUser() && $event->getRole();
         });
     }
 
