@@ -2,19 +2,18 @@
 
 namespace EscolaLms\Permissions\Http\Requests;
 
+use EscolaLms\Permissions\Enums\PermissionsPermissionsEnum;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 
 class RoleDeleteRequest extends FormRequest
 {
-
-
     /**
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
-        return Gate::check('administrate roles');
+        return Gate::check(PermissionsPermissionsEnum::PERMISSIONS_ROLE_MANAGE);
     }
 
     /**
@@ -22,7 +21,7 @@ class RoleDeleteRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [];
     }
