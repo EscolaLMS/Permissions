@@ -11,7 +11,7 @@ class RolesReadTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function testAdminCanReadExistingByName()
+    public function testAdminCanReadExistingByName(): void
     {
         $this->authenticateAsAdmin();
         $name = 'lorem-ipsum-test';
@@ -36,7 +36,7 @@ class RolesReadTest extends TestCase
         $this->assertTrue($per2->assigned === false);
     }
 
-    public function testGuestCannotReadRole()
+    public function testGuestCannotReadRole(): void
     {
         $name = 'lorem-ipsum-test';
         $role = Role::findOrCreate($name, 'api');
@@ -44,7 +44,7 @@ class RolesReadTest extends TestCase
         $response->assertUnauthorized();
     }
 
-    public function testAdminMissingRole()
+    public function testAdminMissingRole(): void
     {
         $this->authenticateAsAdmin();
 

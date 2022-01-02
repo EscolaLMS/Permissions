@@ -18,7 +18,14 @@ class PermissionTableSeeder extends Seeder
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
         $apiAdmin = Role::findOrCreate('admin', 'api');
-        $permissions = [PermissionsPermissionsEnum::PERMISSIONS_ROLE_MANAGE];
+        $permissions = [
+            PermissionsPermissionsEnum::PERMISSIONS_ROLE_MANAGE,
+            PermissionsPermissionsEnum::PERMISSIONS_ROLE_LIST,
+            PermissionsPermissionsEnum::PERMISSIONS_ROLE_READ,
+            PermissionsPermissionsEnum::PERMISSIONS_ROLE_CREATE,
+            PermissionsPermissionsEnum::PERMISSIONS_ROLE_UPDATE,
+            PermissionsPermissionsEnum::PERMISSIONS_ROLE_DELETE,
+        ];
 
 
         foreach ($permissions as $permission) {

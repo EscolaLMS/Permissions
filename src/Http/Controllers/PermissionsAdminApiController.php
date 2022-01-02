@@ -43,7 +43,6 @@ class PermissionsAdminApiController extends EscolaLmsBaseController implements P
         }
     }
 
-
     public function create(RoleCreateRequest $request): JsonResponse
     {
         $role = $this->service->createRole($request->input('name'));
@@ -62,7 +61,6 @@ class PermissionsAdminApiController extends EscolaLmsBaseController implements P
             return $this->sendError($e->getMessage());
         }
     }
-
 
     public function update(RoleUpdateRequest $request, string $name): JsonResponse
     {

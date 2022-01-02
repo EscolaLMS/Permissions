@@ -13,7 +13,7 @@ class RoleUpdateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return Gate::check(PermissionsPermissionsEnum::PERMISSIONS_ROLE_MANAGE);
+        return Gate::check(PermissionsPermissionsEnum::PERMISSIONS_ROLE_UPDATE);
     }
 
     /**

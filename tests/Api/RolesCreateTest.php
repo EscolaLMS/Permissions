@@ -12,9 +12,7 @@ class RolesCreateTest extends TestCase
 {
     use DatabaseTransactions;
 
-
-
-    public function testAdminCanCreateRole()
+    public function testAdminCanCreateRole(): void
     {
         Event::fake();
         $this->authenticateAsAdmin();
@@ -34,7 +32,7 @@ class RolesCreateTest extends TestCase
         });
     }
 
-    public function testTutorCantCreateRole()
+    public function testTutorCantCreateRole(): void
     {
         $user = config('auth.providers.users.model')::factory()->create();
         $user->guard_name = 'api';
@@ -51,8 +49,7 @@ class RolesCreateTest extends TestCase
         $response->assertStatus(403);
     }
 
-
-    public function testAdminCannotCreateRoleWithoutName()
+    public function testAdminCannotCreateRoleWithoutName(): void
     {
         $this->authenticateAsAdmin();
 
@@ -63,7 +60,7 @@ class RolesCreateTest extends TestCase
         $response->assertStatus(422);
     }
 
-    public function testGuestCannotCreateRole()
+    public function testGuestCannotCreateRole(): void
     {
         $response = $this->postJson(
             '/api/admin/roles',
