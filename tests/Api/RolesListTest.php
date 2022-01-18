@@ -12,7 +12,7 @@ class RolesListTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function testAdminCanList()
+    public function testAdminCanList(): void
     {
         $this->authenticateAsAdmin();
 
@@ -39,7 +39,7 @@ class RolesListTest extends TestCase
         $this->assertTrue(isset($neededObject));
     }
 
-    public function testGuestCannotListRole()
+    public function testGuestCannotListRole(): void
     {
         $response = $this->getJson('/api/admin/roles');
         $response->assertUnauthorized();

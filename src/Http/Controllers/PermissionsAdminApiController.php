@@ -33,7 +33,7 @@ class PermissionsAdminApiController extends EscolaLmsBaseController implements P
         return $this->sendResponseForResource(RoleResource::collection($roles), "roles list retrieved successfully");
     }
 
-    public function show(RoleListingRequest $request, string $name): JsonResponse
+    public function show(RoleReadRequest $request, string $name): JsonResponse
     {
         try {
             $permissions = $this->service->rolePermissions($name);
@@ -42,7 +42,6 @@ class PermissionsAdminApiController extends EscolaLmsBaseController implements P
             return $this->sendError($e->getMessage());
         }
     }
-
 
     public function create(RoleCreateRequest $request): JsonResponse
     {
@@ -62,7 +61,6 @@ class PermissionsAdminApiController extends EscolaLmsBaseController implements P
             return $this->sendError($e->getMessage());
         }
     }
-
 
     public function update(RoleUpdateRequest $request, string $name): JsonResponse
     {

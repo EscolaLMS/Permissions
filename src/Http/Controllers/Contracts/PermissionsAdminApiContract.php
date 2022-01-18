@@ -8,13 +8,8 @@ use EscolaLms\Permissions\Http\Requests\RoleDeleteRequest;
 use EscolaLms\Permissions\Http\Requests\RoleListingRequest;
 use EscolaLms\Permissions\Http\Requests\RoleReadRequest;
 use EscolaLms\Permissions\Http\Requests\RoleUpdateRequest;
-use EscolaLms\Permissions\Http\Resources\RoleResource;
-use EscolaLms\Permissions\Http\Resources\PermissionResource;
-
-use EscolaLms\Permissions\Services\Contracts\PermissionsServiceContract;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Exception;
 
 /**
  * @OA\Schema(
@@ -183,7 +178,7 @@ interface PermissionsAdminApiContract
      *                )
      *             )
      *          )
-     * 
+     *
      *     ),
      *     @OA\Response(
      *          response=200,
@@ -305,8 +300,8 @@ interface PermissionsAdminApiContract
      *      ),
      * )
      *
-     * @param RoleListingRequest $request
+     * @param RoleReadRequest $request
      * @return JsonResponse
      */
-    public function show(RoleListingRequest $request, string $name): JsonResponse;
+    public function show(RoleReadRequest $request, string $name): JsonResponse;
 }

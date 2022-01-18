@@ -13,7 +13,7 @@ class RolesUpdateTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function testAdminCanUpdateExistingByName()
+    public function testAdminCanUpdateExistingByName(): void
     {
         $this->authenticateAsAdmin();
         $name = 'lorem-ipsum-test';
@@ -52,7 +52,7 @@ class RolesUpdateTest extends TestCase
         });
     }
 
-    public function testAdminCannotUpdateMissingRole()
+    public function testAdminCannotUpdateMissingRole(): void
     {
         $this->authenticateAsAdmin();
         $name = 'lorem-ipsum-test';
@@ -75,7 +75,7 @@ class RolesUpdateTest extends TestCase
         $response->assertNotFound();
     }
 
-    public function testAdminThrowUpdateRole()
+    public function testAdminThrowUpdateRole(): void
     {
         $this->authenticateAsAdmin();
         $name = 'admin';
@@ -93,8 +93,7 @@ class RolesUpdateTest extends TestCase
         $this->assertTrue($data->message === __("Admin role cannot be updated"));
     }
 
-
-    public function testGuestCannotUpdateRole()
+    public function testGuestCannotUpdateRole(): void
     {
         $name = 'lorem-ipsum-test';
         $role = Role::findOrCreate($name, 'api');
@@ -106,7 +105,7 @@ class RolesUpdateTest extends TestCase
         $response->assertUnauthorized();
     }
 
-    public function testAdminMissingRole()
+    public function testAdminMissingRole(): void
     {
         $this->authenticateAsAdmin();
 

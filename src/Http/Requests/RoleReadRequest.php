@@ -3,17 +3,17 @@
 namespace EscolaLms\Permissions\Http\Requests;
 
 use EscolaLms\Permissions\Enums\PermissionsPermissionsEnum;
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Foundation\Http\FormRequest;
 
-class RoleCreateRequest extends FormRequest
+class RoleReadRequest extends FormRequest
 {
     /**
      * @return bool
      */
     public function authorize(): bool
     {
-        return Gate::check(PermissionsPermissionsEnum::PERMISSIONS_ROLE_CREATE);
+        return Gate::check(PermissionsPermissionsEnum::PERMISSIONS_ROLE_READ);
     }
 
     /**
@@ -23,8 +23,6 @@ class RoleCreateRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'name' => ['required', 'string']
-        ];
+        return [];
     }
 }

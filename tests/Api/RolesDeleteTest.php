@@ -15,9 +15,7 @@ class RolesDeleteTest extends TestCase
 {
     use DatabaseTransactions;
 
-
-
-    public function testAdminCanDeleteExistingRole()
+    public function testAdminCanDeleteExistingRole(): void
     {
         Event::fake();
         $this->authenticateAsAdmin();
@@ -37,7 +35,7 @@ class RolesDeleteTest extends TestCase
         });
     }
 
-    public function testAdminCanNotDeleteRole()
+    public function testAdminCanNotDeleteRole(): void
     {
         Event::fake();
         $this->authenticateAsAdmin();
@@ -50,7 +48,7 @@ class RolesDeleteTest extends TestCase
         });
     }
 
-    public function testAdminCannotDeleteMissingRole()
+    public function testAdminCannotDeleteMissingRole(): void
     {
         $this->authenticateAsAdmin();
 
@@ -61,7 +59,7 @@ class RolesDeleteTest extends TestCase
         $response->assertStatus(404);
     }
 
-    public function testAdminCannotDeleteAdminRole()
+    public function testAdminCannotDeleteAdminRole(): void
     {
         $this->authenticateAsAdmin();
 
@@ -72,7 +70,7 @@ class RolesDeleteTest extends TestCase
         $response->assertStatus(403);
     }
 
-    public function testGuestCannotDeleteExistingRole()
+    public function testGuestCannotDeleteExistingRole(): void
     {
         $name = 'lorem-ipsum-test';
 
