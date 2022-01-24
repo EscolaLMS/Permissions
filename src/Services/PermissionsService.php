@@ -2,8 +2,8 @@
 
 namespace EscolaLms\Permissions\Services;
 
-use EscolaLms\Permissions\Events\EscolaLmsPermissionRoleChangedTemplateEvent;
-use EscolaLms\Permissions\Events\EscolaLmsPermissionRoleRemovedTemplateEvent;
+use EscolaLms\Permissions\Events\PermissionRoleChanged;
+use EscolaLms\Permissions\Events\PermissionRoleRemoved;
 use EscolaLms\Permissions\Services\Contracts\PermissionsServiceContract;
 use Illuminate\Support\Collection;
 use Spatie\Permission\Models\Role;
@@ -44,7 +44,7 @@ class PermissionsService implements PermissionsServiceContract
         $role = Role::where(['name' => $name, 'guard_name' => 'api'])->firstOrFail();
         $roleEvent = clone $role;
         $role->delete();
-        event(new EscolaLmsPermissionRoleRemovedTemplateEvent(auth()->user(), $roleEvent));
+        event(new PermissionRoleRemoved(auth()->user(), $roleEvent));
         return true;
     }
 
@@ -56,7 +56,7 @@ class PermissionsService implements PermissionsServiceContract
         $role = $this->createRole($name);
         $role->syncPermissions($permissions);
 
-        event(new EscolaLmsPermissionRoleChangedTemplateEvent(auth()->user(), $role));
+        event(new PermissionRoleChanged(auth()->user(), $role));
         return $this->rolePermissions($name);
     }
 }
