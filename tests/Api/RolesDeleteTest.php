@@ -2,7 +2,7 @@
 
 namespace EscolaLms\Permissions\Tests\Api;
 
-use EscolaLms\Permissions\Events\EscolaLmsPermissionRoleRemovedTemplateEvent;
+use EscolaLms\Permissions\Events\PermissionRoleRemoved;
 use EscolaLms\Templates\Models\Template;
 use EscolaLms\Templates\Repository\TemplateRepository;
 use EscolaLms\Permissions\Tests\TestCase;
@@ -30,7 +30,7 @@ class RolesDeleteTest extends TestCase
         $role = Role::where(['name' => $name])->first();
 
         $this->assertNull($role);
-        Event::assertDispatched(EscolaLmsPermissionRoleRemovedTemplateEvent::class, function ($event) {
+        Event::assertDispatched(PermissionRoleRemoved::class, function ($event) {
             return $event->getUser() && $this->user === $event->getUser() && $event->getRole();
         });
     }
@@ -43,7 +43,7 @@ class RolesDeleteTest extends TestCase
 
         $response = $this->actingAs($this->user, 'api')->delete('/api/admin/roles/' . $name);
         $response->assertNotFound();
-        Event::assertNotDispatched(EscolaLmsPermissionRoleRemovedTemplateEvent::class, function ($event) {
+        Event::assertNotDispatched(PermissionRoleRemoved::class, function ($event) {
             return $event->getUser() && $this->user === $event->getUser() && $event->getRole();
         });
     }

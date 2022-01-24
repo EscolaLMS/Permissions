@@ -7,7 +7,7 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use Spatie\Permission\Contracts\Role;
 
-abstract class EscolaLmsPermissionTemplateEvent
+abstract class Permission
 {
     use Dispatchable, SerializesModels;
 

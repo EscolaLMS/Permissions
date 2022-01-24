@@ -2,7 +2,7 @@
 
 namespace EscolaLms\Permissions\Tests\Api;
 
-use EscolaLms\Permissions\Events\EscolaLmsPermissionRoleChangedTemplateEvent;
+use EscolaLms\Permissions\Events\PermissionRoleChanged;
 use EscolaLms\Permissions\Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Event;
@@ -27,7 +27,7 @@ class RolesCreateTest extends TestCase
         $response->assertStatus(200);
 
         $this->assertEquals($response->getData()->data->name, Str::slug($name));
-        Event::assertDispatched(EscolaLmsPermissionRoleChangedTemplateEvent::class, function ($event) {
+        Event::assertDispatched(PermissionRoleChanged::class, function ($event) {
             return $event->getUser() && $this->user === $event->getUser() && $event->getRole();
         });
     }
