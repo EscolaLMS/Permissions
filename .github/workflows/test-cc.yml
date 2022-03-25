@@ -33,6 +33,9 @@ jobs:
       - name: Update composer
         run: composer update
 
+      - name: require phpunit-github-actions-printer
+        run: COMPOSER_ROOT_VERSION=0.9.9 composer require --dev mheap/phpunit-github-actions-printer
+
       - name: Clear config
         run: vendor/bin/testbench config:clear
 
@@ -40,7 +43,7 @@ jobs:
         run: vendor/bin/testbench migrate:fresh
 
       - name: Run tests
-        run: XDEBUG_MODE=coverage vendor/bin/phpunit  --coverage-clover coverage.xml
+        run: XDEBUG_MODE=coverage vendor/bin/phpunit  --coverage-clover coverage.xml --printer mheap\\GithubActionsReporter\\Printer
 
       - name: Code Coverage upload
         uses: codecov/codecov-action@v1
