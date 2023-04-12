@@ -2,9 +2,14 @@
 
 namespace EscolaLms\Permissions\Services;
 
+use EscolaLms\Core\Dtos\OrderDto;
+use EscolaLms\Core\Repositories\Criteria\Criterion;
+use EscolaLms\Permissions\Dtos\RoleFilterCriteriaDto;
 use EscolaLms\Permissions\Events\PermissionRoleChanged;
 use EscolaLms\Permissions\Events\PermissionRoleRemoved;
 use EscolaLms\Permissions\Services\Contracts\PermissionsServiceContract;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
@@ -14,9 +19,17 @@ use EscolaLms\Permissions\Exceptions\AdminRoleException;
 class PermissionsService implements PermissionsServiceContract
 {
 
-    public function listRoles(): Collection
+    public function listRoles(OrderDto $orderDto, RoleFilterCriteriaDto $criteriaDto): LengthAwarePaginator
     {
-        return Role::all();
+        $query = Role::query();
+
+        $query = $this->applyCriteria($query, $criteriaDto->toArray());
+
+        if ($orderDto->getOrderBy()) {
+            $query->orderBy($orderDto->getOrderBy(), $orderDto->getOrder() ?? 'asc');
+        }
+
+        return $query->paginate();
     }
 
     public function rolePermissions(string $name): Collection
@@ -58,5 +71,16 @@ class PermissionsService implements PermissionsServiceContract
 
         event(new PermissionRoleChanged(auth()->user(), $role));
         return $this->rolePermissions($name);
+    }
+
+    private function applyCriteria(Builder $query, array $criteria): Builder
+    {
+        foreach ($criteria as $criterion) {
+            if ($criterion instanceof Criterion) {
+                $query = $criterion->apply($query);
+            }
+        }
+
+        return $query;
     }
 }
