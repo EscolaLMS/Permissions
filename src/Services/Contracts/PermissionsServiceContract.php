@@ -2,6 +2,9 @@
 
 namespace EscolaLms\Permissions\Services\Contracts;
 
+use EscolaLms\Core\Dtos\OrderDto;
+use EscolaLms\Permissions\Dtos\RoleFilterCriteriaDto;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Spatie\Permission\Contracts\Role;
 
@@ -10,7 +13,7 @@ use Spatie\Permission\Contracts\Role;
  */
 interface PermissionsServiceContract
 {
-    public function listRoles(): Collection;
+    public function listRoles(OrderDto $orderDto, RoleFilterCriteriaDto $criteriaDto): LengthAwarePaginator;
 
     public function createRole(string $name): Role;
 

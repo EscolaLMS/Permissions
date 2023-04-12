@@ -2,7 +2,9 @@
 
 namespace EscolaLms\Permissions\Http\Controllers;
 
+use EscolaLms\Core\Dtos\OrderDto;
 use EscolaLms\Core\Http\Controllers\EscolaLmsBaseController;
+use EscolaLms\Permissions\Dtos\RoleFilterCriteriaDto;
 use EscolaLms\Permissions\Events\PermissionRoleChanged;
 use EscolaLms\Permissions\Http\Controllers\Contracts\PermissionsAdminApiContract;
 use EscolaLms\Permissions\Http\Requests\RoleCreateRequest;
@@ -29,7 +31,10 @@ class PermissionsAdminApiController extends EscolaLmsBaseController implements P
 
     public function index(RoleListingRequest $request): JsonResponse
     {
-        $roles = $this->service->listRoles();
+        $orderDto = OrderDto::instantiateFromRequest($request);
+        $criteriaDto = RoleFilterCriteriaDto::instantiateFromRequest($request);
+
+        $roles = $this->service->listRoles($orderDto, $criteriaDto);
         return $this->sendResponseForResource(RoleResource::collection($roles), "roles list retrieved successfully");
     }
 

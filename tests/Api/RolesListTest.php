@@ -6,7 +6,6 @@ use EscolaLms\Permissions\Models\Template;
 use EscolaLms\Permissions\Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
 
 class RolesListTest extends TestCase
 {
@@ -37,6 +36,44 @@ class RolesListTest extends TestCase
         );
 
         $this->assertTrue(isset($neededObject));
+    }
+
+    public function testFilterAndSortList(): void
+    {
+        $this->authenticateAsAdmin();
+
+        $this
+            ->actingAs($this->user, 'api')
+            ->json('get', '/api/admin/roles', [
+                'name' => 'tut'
+            ])
+            ->assertOk()
+            ->assertJsonCount(1, 'data')
+            ->assertJsonFragment([
+                'name' => 'tutor'
+            ]);
+
+        $response = $this
+            ->actingAs($this->user, 'api')
+            ->json('get', '/api/admin/roles', [
+                'order_by' => 'name',
+                'order' => 'DESC'
+            ]);
+
+        $this->assertTrue($response->getData()->data[0]->name === 'tutor');
+        $this->assertTrue($response->getData()->data[1]->name === 'student');
+        $this->assertTrue($response->getData()->data[2]->name === 'admin');
+
+        $response = $this
+            ->actingAs($this->user, 'api')
+            ->json('get', '/api/admin/roles', [
+                'order_by' => 'name',
+                'order' => 'ASC'
+            ]);
+
+        $this->assertTrue($response->getData()->data[0]->name === 'admin');
+        $this->assertTrue($response->getData()->data[1]->name === 'student');
+        $this->assertTrue($response->getData()->data[2]->name === 'tutor');
     }
 
     public function testGuestCannotListRole(): void

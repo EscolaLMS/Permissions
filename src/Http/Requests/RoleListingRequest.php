@@ -23,6 +23,10 @@ class RoleListingRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [];
+        return [
+            'name' => ['sometimes', 'nullable', 'string'],
+            'order_by' => ['sometimes', 'string', 'in:name, id'],
+            'order' => ['sometimes', 'string', 'in:ASC,DESC'],
+        ];
     }
 }
