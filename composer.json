@@ -31,5 +31,10 @@
         "EscolaLms\\Permissions\\EscolaLmsPermissionsServiceProvider"
       ]
     }
+  },
+  "config": {
+    "allow-plugins": {
+      "php-http/discovery": true
+    }
   }
 }
