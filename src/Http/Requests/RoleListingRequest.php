@@ -25,7 +25,7 @@ class RoleListingRequest extends FormRequest
     {
         return [
             'name' => ['sometimes', 'nullable', 'string'],
-            'order_by' => ['sometimes', 'string', 'in:name,id'],
+            'order_by' => ['sometimes', 'string', 'in:name, id'],
             'order' => ['sometimes', 'string', 'in:ASC,DESC'],
         ];
     }

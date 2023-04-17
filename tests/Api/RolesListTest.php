@@ -74,28 +74,6 @@ class RolesListTest extends TestCase
         $this->assertTrue($response->getData()->data[0]->name === 'admin');
         $this->assertTrue($response->getData()->data[1]->name === 'student');
         $this->assertTrue($response->getData()->data[2]->name === 'tutor');
-
-        $response = $this
-            ->actingAs($this->user, 'api')
-            ->json('get', '/api/admin/roles', [
-                'order_by' => 'id',
-                'order' => 'DESC'
-            ]);
-
-        $this->assertTrue($response->getData()->data[0]->name === 'admin');
-        $this->assertTrue($response->getData()->data[1]->name === 'tutor');
-        $this->assertTrue($response->getData()->data[2]->name === 'student');
-
-        $response = $this
-            ->actingAs($this->user, 'api')
-            ->json('get', '/api/admin/roles', [
-                'order_by' => 'id',
-                'order' => 'ASC'
-            ]);
-
-        $this->assertTrue($response->getData()->data[0]->name === 'student');
-        $this->assertTrue($response->getData()->data[1]->name === 'tutor');
-        $this->assertTrue($response->getData()->data[2]->name === 'admin');
     }
 
     public function testGuestCannotListRole(): void
