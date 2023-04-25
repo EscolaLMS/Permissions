@@ -42,8 +42,9 @@ class RolesListTest extends TestCase
     {
         $this->authenticateAsAdmin();
 
-        $this
-            ->actingAs($this->user, 'api')
+        Role::query()->whereNotIn('name', ['tutor', 'student', 'admin'])->delete();
+
+        $this->actingAs($this->user, 'api')
             ->json('get', '/api/admin/roles', [
                 'name' => 'tut'
             ])
