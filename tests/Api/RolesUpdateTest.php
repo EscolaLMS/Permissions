@@ -88,9 +88,10 @@ class RolesUpdateTest extends TestCase
             ]
         ]);
         $response->assertNotFound();
-        $data = $response->getData();
-        $this->assertObjectHasAttribute( 'message', $data);
-        $this->assertTrue($data->message === __("Admin role cannot be updated"));
+        $response->assertJsonFragment([
+            'success' => false,
+            'message' =>  __('Admin role cannot be updated'),
+        ]);
     }
 
     public function testGuestCannotUpdateRole(): void
